@@ -59,10 +59,6 @@
 
 ### 方法2: ローカルHTTPサーバーで起動（推奨・スマホ実機アクセス可能）
 Node.js がインストールされている場合：
-```powershell
-cd c:\Users\johhn\GitHub\ap-tech-learning-app
-npx serve .
-```
 表示されるローカルIPアドレス（例: `http://192.168.x.x:3000`）に同一Wi-Fi内のスマートフォンのブラウザからアクセスすれば、スマホ実機でそのまま学習できます！
 
 ---
