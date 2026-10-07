@@ -11,56 +11,56 @@ import { renderDbNormalizeSimulator } from "../simulators/db-normalize.js";
 export function renderLabView(container, state, onNavigate) {
   const labItems = [
     {
-      id: "pipeline",
-      title: "パイプライン＆フォワーディング",
-      sub: "CPU内部の5段分業とRAWハザード解消",
-      icon: "⚡",
-      category: "processor",
-      render: renderPipelineSimulator
-    },
-    {
-      id: "memory",
-      title: "仮想記憶 LRU / FIFO ページ置換",
-      sub: "時間的局所性とキャッシュ置換アルゴリズム",
-      icon: "🧠",
-      category: "os",
-      render: renderMemoryPageSimulator
+      id: "normalize",
+      title: "🗄️ DB正規化ステップパズル",
+      sub: "更新時異状の悲劇と第1〜第3正規化の分離",
+      icon: "🗄️",
+      category: "database",
+      render: renderDbNormalizeSimulator
     },
     {
       id: "subnet",
-      title: "サブネットマスク＆CIDRビット計算機",
+      title: "🌐 サブネットマスク＆CIDR計算機",
       sub: "32ビット解剖・VLSM・ホスト範囲計算",
       icon: "🌐",
       category: "network",
       render: renderSubnetCalculator
     },
     {
+      id: "pipeline",
+      title: "⚡ パイプライン＆フォワーディング",
+      sub: "CPU内部の5段分業とRAWハザード解消",
+      icon: "⚡",
+      category: "processor",
+      render: renderPipelineSimulator
+    },
+    {
       id: "crypto",
-      title: "公開鍵・署名・ハイブリッド暗号",
+      title: "🔐 公開鍵・署名・ハイブリッド暗号",
       sub: "「誰の鍵で何をする？」TLS通信の完全攻略",
       icon: "🔐",
       category: "security",
       render: renderCryptoFlowSimulator
     },
     {
+      id: "memory",
+      title: "🧠 仮想記憶 LRU / FIFO ページ置換",
+      sub: "時間的局所性とキャッシュ置換アルゴリズム",
+      icon: "🧠",
+      category: "os",
+      render: renderMemoryPageSimulator
+    },
+    {
       id: "raid",
-      title: "システム稼働率＆RAID 5復元",
+      title: "💾 システム稼働率＆RAID 5復元",
       sub: "直並列の確率計算とXORパリティの奇跡",
       icon: "💾",
       category: "system",
       render: renderAvailabilityRaidSimulator
-    },
-    {
-      id: "normalize",
-      title: "DB正規化ステップパズル",
-      sub: "更新時異状の悲劇と第1〜第3正規化の分離",
-      icon: "🗄️",
-      category: "database",
-      render: renderDbNormalizeSimulator
     }
   ];
 
-  let selectedLabId = state.currentLabId || "pipeline";
+  let selectedLabId = state.currentLabId || "normalize";
 
   function render() {
     const curLab = labItems.find((l) => l.id === selectedLabId) || labItems[0];

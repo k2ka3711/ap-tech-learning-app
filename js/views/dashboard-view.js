@@ -59,6 +59,72 @@ export function renderDashboardView(container, state, onResetState) {
           </div>
         </div>
 
+        <!-- 重点2分野（データベース・ネットワーク）の克服ステータス -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200 space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <h3 class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+              <span>🎯</span> 重点克服分野の攻略状況
+            </h3>
+            <span class="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded">集中特訓中</span>
+          </div>
+
+          <div class="space-y-2.5">
+            <!-- DB進捗 -->
+            <div>
+              <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                <span class="flex items-center gap-1">🗄️ データベース</span>
+                <span class="font-mono text-indigo-600">
+                  ${
+                    (() => {
+                      const dbQs = drillData.filter(q => q.category === 'database');
+                      const hist = state.drillHistory || {};
+                      const correctCount = dbQs.filter(q => hist[q.id]?.isCorrect).length;
+                      return `${correctCount} / ${dbQs.length} 問 達成 (${Math.round(correctCount / dbQs.length * 100)}%)`;
+                    })()
+                  }
+                </span>
+              </div>
+              <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                <div class="bg-indigo-600 h-full rounded-full transition-all" style="width: ${
+                  (() => {
+                    const dbQs = drillData.filter(q => q.category === 'database');
+                    const hist = state.drillHistory || {};
+                    const correctCount = dbQs.filter(q => hist[q.id]?.isCorrect).length;
+                    return (correctCount / dbQs.length) * 100;
+                  })()
+                }%"></div>
+              </div>
+            </div>
+
+            <!-- NW進捗 -->
+            <div>
+              <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                <span class="flex items-center gap-1">🌐 ネットワーク</span>
+                <span class="font-mono text-cyan-600">
+                  ${
+                    (() => {
+                      const nwQs = drillData.filter(q => q.category === 'network');
+                      const hist = state.drillHistory || {};
+                      const correctCount = nwQs.filter(q => hist[q.id]?.isCorrect).length;
+                      return `${correctCount} / ${nwQs.length} 問 達成 (${Math.round(correctCount / nwQs.length * 100)}%)`;
+                    })()
+                  }
+                </span>
+              </div>
+              <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                <div class="bg-cyan-500 h-full rounded-full transition-all" style="width: ${
+                  (() => {
+                    const nwQs = drillData.filter(q => q.category === 'network');
+                    const hist = state.drillHistory || {};
+                    const correctCount = nwQs.filter(q => hist[q.id]?.isCorrect).length;
+                    return (correctCount / nwQs.length) * 100;
+                  })()
+                }%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 学習実績サマリー -->
         <div class="grid grid-cols-3 gap-2">
           <div class="bg-white p-3 rounded-2xl border border-slate-200 text-center shadow-sm">

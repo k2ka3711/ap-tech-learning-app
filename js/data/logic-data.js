@@ -63,6 +63,46 @@ export const logicData = {
       length: 37,
       pointKeywords: ["ブロードキャスト", "到達範囲を限定", "トラフィック軽減", "セキュリティ向上"],
       background: "フラットな1つのネットワークだと、ARPなどのブロードキャストパケットが全PCに届いて帯域を圧迫します。また、営業部と開発部のパケットが盗聴・覗き見されるリスクがあります。VLAN（Virtual LAN）で論理的に分割すれば、物理配線を変えずにブロードキャストドメインを閉じ込め、通信を安全に分離できます。"
+    },
+    {
+      id: "logic-b-tree-range",
+      category: "database",
+      categoryLabel: "データベース・インデックス",
+      question: "B+木インデックスにおいて、範囲検索（BETWEEN等）が高速に行える構造上の理由は何か？（40字以内）",
+      modelAnswer: "最下層の全葉ノードがキー順にポインタで双方向チェーン状に連結されているため。",
+      length: 37,
+      pointKeywords: ["葉ノード", "ポインタで連結", "双方向チェーン", "キー順"],
+      background: "通常の二分木では範囲検索をする際に親や兄弟ノードを行き来するバックトラックが必要ですが、B+木は実データを持つ葉（Leaf）ノード同士が横方向のポインタで数珠繋ぎになっているため、開始キーを一度特定したら、あとは葉を横に流れるように連続読み出しできます。"
+    },
+    {
+      id: "logic-two-phase-locking",
+      category: "database",
+      categoryLabel: "データベース・並行処理",
+      question: "2相ロッキングプロトコル（2PL）を適用することで保証される性質は何か？（25字以内）",
+      modelAnswer: "並行実行されるトランザクションの直列可能性が保証される。",
+      length: 25,
+      pointKeywords: ["直列可能性", "保証"],
+      background: "ロックを獲得するだけの「成長相」と、ロックを解放するだけの「縮小相」に分けることで、複数のトランザクションが同時に走っても、まるで1つずつ順番に直列実行したかのような一貫した状態を保証します。ただしデッドロックは防止できない点に注意が必要です。"
+    },
+    {
+      id: "logic-tcp-sliding-window",
+      category: "network",
+      categoryLabel: "トランスポート層・TCP",
+      question: "TCPのスライディングウィンドウ制御が伝送スループットを向上させる理由は何か？（40字以内）",
+      modelAnswer: "確認応答（ACK）の受信を待たずに、ウィンドウサイズ分のデータを連続送信できるため。",
+      length: 40,
+      pointKeywords: ["確認応答の受信を待たずに", "ウィンドウサイズ分", "連続送信"],
+      background: "1個パケットを送るたびに相手からのACKを待っていると、往復遅延時間（RTT）のせいで回線帯域のほとんどが無駄になります。ウィンドウ制御では、相手が受信可能なバッファ容量（ウィンドウサイズ）の範囲内であれば、ACKを待たずに一気にまとめてパイプライン送信するため、高遅延な回線でも最大スループットが出せます。"
+    },
+    {
+      id: "logic-nat-inbound-block",
+      category: "network",
+      categoryLabel: "ネットワーク・NAT/NAPT",
+      question: "NAPT環境において、インターネット外部から社内PCへ直接通信を開始できない理由は何か？（40字以内）",
+      modelAnswer: "ルータのポート変換テーブルに社内端末と紐付く事前の対応エントリが存在しないため。",
+      length: 39,
+      pointKeywords: ["ポート変換テーブル", "対応エントリが存在しない", "社内端末"],
+      background: "社内PCから外へ出て行く通信があれば、ルータが『グローバルIPの〇番ポート ⇔ 社内IPの△番ポート』という対応表（セッションテーブル）を動的に作成します。しかし外部からいきなり通信が来ても、どの社内PC宛てなのか変換表に対応がないため、ルータはパケットを破棄するしかありません。"
     }
   ],
 
@@ -106,6 +146,32 @@ export const logicData = {
       ],
       sample: "例: 2Mバイトのファイルを 10Mbps (利用率 40%) の回線で送る時間\n2MB = 2 × 10^6 × 8 = 16,000,000 bit\n実効速度 = 10,000,000 × 0.4 = 4,000,000 bps\n時間 = 16,000,000 ÷ 4,000,000 = 4秒",
       essence: "試験の最大の引っ掛けは「バイト（B）とビット（b）の換算（8倍）忘れ」です！"
+    },
+    {
+      id: "table-isolation-levels",
+      title: "トランザクション分離レベルと並行処理異常",
+      category: "database",
+      formula: "直列可能性 ＞ 反復可能読み ＞ 読取確定 ＞ 読取未確定",
+      variables: [
+        { symbol: "Dirty Read", name: "未コミットの更新途中データを他者が読めてしまう現象" },
+        { symbol: "Non-repeatable Read", name: "同じ行を2回読んだとき、他者のコミットによって値が変わる現象" },
+        { symbol: "Phantom Read", name: "同じ条件で2回範囲検索したとき、他者の挿入によって行数が増減する現象" }
+      ],
+      sample: "【分離レベルと発生マトリクス】\n・Read Uncommitted: Dirty(発生) / Non-rep(発生) / Phantom(発生)\n・Read Committed: Dirty(防止) / Non-rep(発生) / Phantom(発生) ※多くのDBのデフォルト\n・Repeatable Read: Dirty(防止) / Non-rep(防止) / Phantom(発生)\n・Serializable: Dirty(防止) / Non-rep(防止) / Phantom(防止) ※完全直列化",
+      essence: "上に行くほど安全（データ整合性◎）だがロック待ちが増えて遅くなる（並行性×）。実務と試験ではこのトレードオフが最重要！"
+    },
+    {
+      id: "table-tcp-udp",
+      title: "TCP と UDP の決定的対比チートシート",
+      category: "network",
+      formula: "TCP: 信頼性・順序保証（重厚） vs UDP: 高速・リアルタイム（軽量）",
+      variables: [
+        { symbol: "通信方式", name: "TCP: コネクション型（3ウェイハンドシェイク） / UDP: コネクションレス型" },
+        { symbol: "ヘッダ長", name: "TCP: 20バイト〜60バイト / UDP: 8バイト固定（超軽量）" },
+        { symbol: "再送・順序", name: "TCP: シーケンス番号＋ACKで再送・並べ替え / UDP: なし（投げっぱなし）" }
+      ],
+      sample: "【代表的な利用プロトコル】\n・TCPを使うもの: HTTP/HTTPS, FTP, SMTP/POP3, SSH（1文字も落とせない通信）\n・UDPを使うもの: DNS問合せ, DHCP, NTP, VoIP（音声通話）, QUIC(HTTP/3), 映像配信",
+      essence: "「ファイルやWebページ＝TCP」「リアルタイム音声や名指し問い合わせ＝UDP」とイメージすれば迷いません。"
     }
   ],
 

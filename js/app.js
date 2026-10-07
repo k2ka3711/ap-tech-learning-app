@@ -12,12 +12,11 @@ const STORAGE_KEY = "AP_TECH_MASTER_STATE_V1";
 // 初期ステート
 const defaultState = {
   currentTab: "lab",
-  currentLabId: "pipeline",
+  currentLabId: "db-normalize",
   exp: 140, // FE合格済みのご褒美初期値
   clearedQuests: [],
-  needsReviewQuestionIds: ["q-proc-1"],
-  bookmarkedQuestionIds: ["q-sec-1", "q-net-1"],
-  isMobileFrame: true // PC閲覧時のスマホ枠表示
+  needsReviewQuestionIds: ["q-db-norm-1", "q-net-cidr-1"],
+  bookmarkedQuestionIds: ["q-db-tx-2", "q-net-tcp-1"]
 };
 
 class App {
@@ -54,7 +53,6 @@ class App {
     this.mainContent = document.getElementById("main-content");
     this.topExpBadge = document.getElementById("top-exp-badge");
     this.topLevelBadge = document.getElementById("top-level-badge");
-    this.btnToggleFrame = document.getElementById("btn-toggle-frame");
     this.deviceFrameWrapper = document.getElementById("device-frame-wrapper");
     this.navButtons = document.querySelectorAll(".nav-btn");
   }
@@ -67,32 +65,6 @@ class App {
         this.switchTab(tab);
       };
     });
-
-    // スマホ枠 ⇔ 全画面 トグル
-    if (this.btnToggleFrame) {
-      this.btnToggleFrame.onclick = () => {
-        this.state.isMobileFrame = !this.state.isMobileFrame;
-        this.applyFrameMode();
-        this.saveState();
-      };
-    }
-  }
-
-  applyFrameMode() {
-    if (!this.deviceFrameWrapper) return;
-    if (this.state.isMobileFrame) {
-      this.deviceFrameWrapper.classList.add("mobile-frame-mode");
-      if (this.btnToggleFrame) {
-        this.btnToggleFrame.innerHTML = `<span>🖥️ 全画面</span>`;
-        this.btnToggleFrame.title = "全画面表示に切り替え";
-      }
-    } else {
-      this.deviceFrameWrapper.classList.remove("mobile-frame-mode");
-      if (this.btnToggleFrame) {
-        this.btnToggleFrame.innerHTML = `<span>📱 スマホ枠</span>`;
-        this.btnToggleFrame.title = "スマホ枠表示に切り替え";
-      }
-    }
   }
 
   updateHeaderStats() {

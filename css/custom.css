@@ -34,31 +34,9 @@ body {
   scrollbar-width: none;
 }
 
-/* PC閲覧時のスマホモックアップフレーム設定 */
-#device-frame-wrapper.mobile-frame-mode {
-  max-width: 440px;
-  margin: 1.5rem auto;
-  border-radius: 44px;
-  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.3), 0 0 0 12px #0f172a, 0 0 0 14px #334155;
-  overflow: hidden;
-  position: relative;
-  min-height: 860px;
-  background-color: #f8fafc;
-}
-
-/* ダイナミックアイランド風ノッチ（スマホ枠モード時のみ表示） */
-#device-frame-wrapper.mobile-frame-mode::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 22px;
-  background-color: #0f172a;
-  border-radius: 20px;
-  z-index: 50;
-  pointer-events: none;
+/* モバイルファーストコンテナの微調整 */
+#device-frame-wrapper {
+  overflow-x: hidden;
 }
 
 /* アニメーション */
